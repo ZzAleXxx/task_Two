@@ -1,8 +1,8 @@
 package com.company;
 
-class Stack<T extends Object> {
-    private int maxSize;
-    private T[] stackArr;
+class Stack<T>  {
+    private final int maxSize;
+    private final T[] stackArr;
     private int top;
 
     public Stack(int size) {
@@ -10,7 +10,6 @@ class Stack<T extends Object> {
         this.stackArr = (T[]) new Object[maxSize];
         this.top = -1;
     }
-
     public boolean isStackEmpty() {
         return (top == -1);
     }
@@ -18,22 +17,20 @@ class Stack<T extends Object> {
     public boolean isStackFull() {
         return (top == maxSize - 1);
     }
-
     public void push(T elements) {
         if (this.isStackFull()) {
             System.out.println(("Stack is full"));
         }
-        System.out.println("В стек добавлен элемент");
-///        System.out.println("В стек добавлен элемент: " + elements);
         this.stackArr[++top] = elements;
     }
-
     public void pop() {
         if (this.isStackEmpty()) {
             System.out.println("Stack is empty");
         }
         T elements = this.stackArr[top--];
-        System.out.println("Удалённый элемент: " + elements);
+    }
+    public T peek(){
+        return this.stackArr[top];
     }
 };
 
@@ -51,8 +48,10 @@ class FIGURE {
 
 class Triangle extends FIGURE {
     private double p, a, b, c, square;
-    private String name_fig = "Треугольник";
-    public Triangle(double a, double b, double c) {
+    private String name_fig;
+    //private String name_fig = "Треугольник";
+    public Triangle(String name_fig, double a, double b, double c) {
+        this.name_fig = name_fig;
         this.a = a;
         this.b = b;
         this.c = c;
@@ -70,7 +69,7 @@ class Triangle extends FIGURE {
 
 class Circle extends FIGURE {
     private double square, r;
-    private String name_fig = "Круг";
+    private String name_fig = "круг";
     public Circle(double r){
         this.r = r;
     }
@@ -88,22 +87,23 @@ class Circle extends FIGURE {
 
 public class Main {
     public static void main(String[] args) {
-        FIGURE[] figure = {
-                new Triangle(3, 5, 7),
-                new Circle(4)
-        };
-        Stack<String> stack = new Stack<String>(2);
+        Stack<FIGURE> stack = new Stack<FIGURE>(2);
+        Triangle f1 = new Triangle("треугольник",3, 5 ,4);
+        stack.push(f1);
+        Circle f2 = new Circle(4);
+        stack.push(f2);
+///        Stack<Integer> stack1 = new Stack<>(5);
+///        stack1.push(8);
+///        int m = stack1.peek();
+///        System.out.println(m);
 
-        for (FIGURE Fig : figure) {
-            String f1 = Fig.fig() + ": площадь S = " + Fig.calc_square();
-            stack.push(f1);
-            //System.out.println(Fig.fig() + ": Площадь S = " + Fig.calc_square());
-        }
-        System.out.println(" ");
-
-        for (int i = 0; i < figure.length; i++)
-        {
+        while (!stack.isStackEmpty()){
+            System.out.println();
+            double sq = stack.peek().calc_square();
+            String Name = stack.peek().fig();
+            System.out.println("Фигура " + Name + ": площадь " + sq);
             stack.pop();
         }
     }
 }
+
